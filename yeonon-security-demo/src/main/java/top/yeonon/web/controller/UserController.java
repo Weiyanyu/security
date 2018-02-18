@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.yeonon.dto.User;
 import top.yeonon.dto.UserCondition;
+import top.yeonon.exception.UserServiceException;
 
 
 import javax.validation.Valid;
@@ -39,15 +40,16 @@ public class UserController {
         user.setId(id);
         user.setUsername("yeonon");
         user.setPassword("124563");
+        System.out.println("getUserInfo 开始");
         return user;
     }
 
     @PostMapping
-    public User createUser(@Valid @RequestBody User user, BindingResult errors) {
+    public User createUser(@Valid @RequestBody User user) {
 
-        if (errors.hasErrors()) {
-            errors.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
-        }
+//        if (errors.hasErrors()) {
+//            errors.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+//        }
 
         user.setId(2);
         System.out.println(user);
