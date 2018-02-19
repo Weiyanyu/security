@@ -7,8 +7,8 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-@Order(1)
-@WebFilter(urlPatterns = "/*", filterName = "timeFilter")
+//@Order(1)
+//@WebFilter(urlPatterns = "/*", filterName = "timeFilter")
 public class TimeFilter implements Filter{
 
     @Override

@@ -12,8 +12,8 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     @Autowired
     private TimeInterceptor timeInterceptor;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(timeInterceptor);
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(timeInterceptor);
+//    }
 }

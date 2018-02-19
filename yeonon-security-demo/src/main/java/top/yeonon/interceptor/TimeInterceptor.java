@@ -14,7 +14,6 @@ public class TimeInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         System.out.println("pre handle");
         HandlerMethod method = (HandlerMethod) o;
-        System.out.println(method.getMethod().getGenericParameterTypes()[0].getTypeName());
         return true;
     }
 
