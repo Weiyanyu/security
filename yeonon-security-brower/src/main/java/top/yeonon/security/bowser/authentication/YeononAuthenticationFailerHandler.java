@@ -8,6 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+import top.yeonon.security.bowser.support.SampleResponse;
 import top.yeonon.security.core.properties.LoginType;
 import top.yeonon.security.core.properties.SecurityProperties;
 
@@ -39,7 +40,7 @@ public class YeononAuthenticationFailerHandler extends SimpleUrlAuthenticationFa
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter writer = response.getWriter();
-            writer.write(objectMapper.writeValueAsString(exception));
+            writer.write(objectMapper.writeValueAsString(new SampleResponse(exception.getMessage())));
             writer.flush();
         } else {
             super.onAuthenticationFailure(request, response, exception);
