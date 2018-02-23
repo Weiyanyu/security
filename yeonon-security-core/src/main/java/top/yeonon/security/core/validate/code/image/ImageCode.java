@@ -1,7 +1,8 @@
-package top.yeonon.security.core.validate.code;
+package top.yeonon.security.core.validate.code.image;
 
 import lombok.Getter;
 import lombok.Setter;
+import top.yeonon.security.core.validate.code.ValidateCode;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
@@ -12,29 +13,16 @@ import java.time.LocalDateTime;
  **/
 @Getter
 @Setter
-public class ImageCode {
+public class ImageCode extends ValidateCode {
     private BufferedImage image;
 
-    private String code;
-
-    private LocalDateTime expireTime;
-
-
     public ImageCode(BufferedImage image, String code, LocalDateTime expireTime) {
+        super(code, expireTime);
         this.image = image;
-        this.code = code;
-        this.expireTime = expireTime;
     }
 
     public ImageCode(BufferedImage image, String code, int expireIn) {
+        super(code, expireIn);
         this.image = image;
-        this.code = code;
-        this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
     }
-
-    public boolean isExpire() {
-        return LocalDateTime.now().isAfter(expireTime);
-    }
-
-
 }
