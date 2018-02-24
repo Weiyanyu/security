@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
+import top.yeonon.security.core.properties.SecurityConstants;
 import top.yeonon.security.core.validate.code.image.ImageCode;
 import top.yeonon.security.core.validate.code.sms.SmsCodeSender;
 
@@ -30,7 +31,7 @@ public class ValidateCodeController {
     private Map<String, ValidateCodeProcessor> validateCodeProcessors;
 
 
-    @GetMapping("/code/{type}")
+    @GetMapping(SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/{type}")
     public void createCode(HttpServletRequest request, HttpServletResponse response,
                            @PathVariable("type") String type) throws IOException, ServletRequestBindingException {
         validateCodeProcessors.get(type+"ValidateCodeProcessor").create(new ServletWebRequest(request, response));
