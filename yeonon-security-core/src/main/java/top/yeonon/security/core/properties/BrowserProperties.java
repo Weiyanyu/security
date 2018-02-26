@@ -11,6 +11,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BrowserProperties {
+
+    private String signUpUrl = "/signUp.html";
+
     private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
 
     private LoginType loginType = LoginType.JSON;

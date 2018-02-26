@@ -2,16 +2,20 @@ package top.yeonon.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 import top.yeonon.dto.User;
 import top.yeonon.dto.UserCondition;
 import top.yeonon.exception.UserServiceException;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
+
+    @PostMapping("/regist")
+    public void register(User user, HttpServletRequest request) {
+        //注册用户
+        String userId = user.getUsername();
+        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+    }
+
 
     @GetMapping
     @JsonView(User.UserSampleView.class)
