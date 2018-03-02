@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +35,12 @@ public class UserController {
         //注册用户
         String userId = user.getUsername();
         providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+    }
+
+
+    @GetMapping("/me")
+    public UserDetails getMe(@AuthenticationPrincipal UserDetails userDetails) {
+        return userDetails;
     }
 
 

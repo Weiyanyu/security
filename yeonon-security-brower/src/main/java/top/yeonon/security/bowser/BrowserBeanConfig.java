@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
+import top.yeonon.security.bowser.authentication.YeononLogoutSuccessHandler;
 import top.yeonon.security.bowser.session.YeononInvalidSessionStrategy;
 import top.yeonon.security.bowser.session.YeononSessionExpireStrategy;
 import top.yeonon.security.core.properties.SecurityProperties;
@@ -22,16 +24,22 @@ public class BrowserBeanConfig {
 
     @Bean
     @ConditionalOnMissingBean(InvalidSessionStrategy.class)
-    public YeononInvalidSessionStrategy yeononInvalidSessionStrategy() {
+    public InvalidSessionStrategy yeononInvalidSessionStrategy() {
         String invalidUrl = securityProperties.getBrowser().getSession().getSessionInvalidUrl();
         return new YeononInvalidSessionStrategy(invalidUrl);
     }
 
     @Bean
     @ConditionalOnMissingBean(SessionInformationExpiredStrategy.class)
-    public YeononSessionExpireStrategy yeononSessionExpireStrategy() {
+    public SessionInformationExpiredStrategy yeononSessionExpireStrategy() {
         String invalidUrl = securityProperties.getBrowser().getSession().getSessionInvalidUrl();
         return new YeononSessionExpireStrategy(invalidUrl);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(LogoutSuccessHandler.class)
+    public LogoutSuccessHandler yeononLogoutSuccessHandler() {
+        return new YeononLogoutSuccessHandler(securityProperties.getBrowser().getSignOutUrl());
     }
 
 }

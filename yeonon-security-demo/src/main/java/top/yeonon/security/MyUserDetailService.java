@@ -40,6 +40,6 @@ public class MyUserDetailService implements UserDetailsService, SocialUserDetail
         System.out.println("用户密码是" + password);
         return new SocialUser(userId, password,
                 true,true,true, true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
     }
 }

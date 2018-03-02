@@ -12,9 +12,14 @@
     <artifactId>yeonon-security-demo</artifactId>
 
     <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>top.yeonon</groupId>-->
+            <!--<artifactId>yeonon-security-brower</artifactId>-->
+            <!--<version>${yeonon.security.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>top.yeonon</groupId>
-            <artifactId>yeonon-security-brower</artifactId>
+            <artifactId>yeonon-security-app</artifactId>
             <version>${yeonon.security.version}</version>
         </dependency>
 

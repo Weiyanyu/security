@@ -9,7 +9,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import top.yeonon.security.bowser.support.SampleResponse;
+import top.yeonon.security.core.support.SampleResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

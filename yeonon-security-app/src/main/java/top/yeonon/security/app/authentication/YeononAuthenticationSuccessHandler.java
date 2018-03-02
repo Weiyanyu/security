@@ -1,13 +1,11 @@
-package top.yeonon.security.bowser.authentication;
+package top.yeonon.security.app.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import top.yeonon.security.core.support.SampleResponse;
 import top.yeonon.security.core.properties.LoginType;
 import top.yeonon.security.core.properties.SecurityProperties;
 
@@ -19,11 +17,12 @@ import java.io.PrintWriter;
 
 /**
  * @Author yeonon
- * @date 2018/2/20 0020 19:47
+ * @date 2018/2/20 0020 19:27
  **/
-@Component("yeononAuthenticationFailerHandler")
 @Log
-public class YeononAuthenticationFailerHandler extends SimpleUrlAuthenticationFailureHandler {
+@Component("yeononAuthenticationSuccessHandler")
+public class YeononAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -32,18 +31,17 @@ public class YeononAuthenticationFailerHandler extends SimpleUrlAuthenticationFa
     private SecurityProperties securityProperties;
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        log.info("登录失败");
-
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        log.info("登录成功");
         if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter writer = response.getWriter();
-            writer.write(objectMapper.writeValueAsString(new SampleResponse(exception.getMessage())));
+            writer.write(objectMapper.writeValueAsString(authentication));
             writer.flush();
         } else {
-            super.onAuthenticationFailure(request, response, exception);
+            super.onAuthenticationSuccess(request, response, authentication);
         }
+
 
     }
 }

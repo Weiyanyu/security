@@ -1,4 +1,4 @@
-package top.yeonon.security.bowser.support;
+package top.yeonon.security.core.support;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

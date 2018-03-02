@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -36,7 +37,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
-
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
@@ -49,10 +49,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private SessionInformationExpiredStrategy yeononSessionExpireStrategy;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private LogoutSuccessHandler yeononLogoutSuccessHandler;
+
+
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -79,6 +79,11 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                 .userDetailsService(userDetailsService)
                 .and()
+                .logout()
+                .logoutSuccessUrl("signOut.html")
+                .logoutSuccessHandler(yeononLogoutSuccessHandler)
+                .deleteCookies("JSESSIONID")
+                .and()
                 .sessionManagement()
                 .invalidSessionStrategy(yeononInvalidSessionStrategy)
                 .invalidSessionUrl(SecurityConstants.DEFAULT_SESSION_INVALID_URL)
@@ -95,6 +100,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
                         securityProperties.getBrowser().getSignUpUrl(),
                         SecurityConstants.DEFAULT_SESSION_INVALID_URL,
+                        securityProperties.getBrowser().getSignOutUrl(),
                         "/users/regist")
                 .permitAll()
                 .anyRequest()

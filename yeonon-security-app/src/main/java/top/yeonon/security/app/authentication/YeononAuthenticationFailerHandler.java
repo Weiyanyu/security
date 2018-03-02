@@ -1,4 +1,4 @@
-package top.yeonon.security.bowser.authentication;
+package top.yeonon.security.app.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
@@ -7,9 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import top.yeonon.security.core.support.SampleResponse;
+
 import top.yeonon.security.core.properties.LoginType;
 import top.yeonon.security.core.properties.SecurityProperties;
+import top.yeonon.security.core.support.SampleResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

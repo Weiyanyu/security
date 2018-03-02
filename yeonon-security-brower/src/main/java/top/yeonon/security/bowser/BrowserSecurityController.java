@@ -1,6 +1,5 @@
 package top.yeonon.security.bowser;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.extern.java.Log;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
-import top.yeonon.security.bowser.support.SampleResponse;
+import top.yeonon.security.core.support.SampleResponse;
 import top.yeonon.security.bowser.support.SocialUserInfo;
 import top.yeonon.security.core.properties.SecurityConstants;
 import top.yeonon.security.core.properties.SecurityProperties;
