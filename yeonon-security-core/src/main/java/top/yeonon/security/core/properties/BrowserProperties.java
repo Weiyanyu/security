@@ -12,6 +12,8 @@ import lombok.Setter;
 @Setter
 public class BrowserProperties {
 
+    private SessionProperties session = new SessionProperties();
+
     private String signUpUrl = "/signUp.html";
 
     private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;

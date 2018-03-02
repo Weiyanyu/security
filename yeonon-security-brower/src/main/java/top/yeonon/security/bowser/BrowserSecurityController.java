@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 @Log
 public class BrowserSecurityController {
 
-
     private RequestCache requestCache = new HttpSessionRequestCache();
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -55,7 +54,6 @@ public class BrowserSecurityController {
                 redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
             }
         }
-
         return new SampleResponse("访问的服务需要身份认证，请引导用户到登录页");
     }
 
@@ -69,4 +67,13 @@ public class BrowserSecurityController {
         socialUserInfo.setHeadimg(connection.getImageUrl());
         return socialUserInfo;
     }
+
+    @GetMapping("/session/invalid")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public SampleResponse sessionInvalid() {
+        String message = "session失效";
+        return new SampleResponse(message);
+    }
+
+
 }

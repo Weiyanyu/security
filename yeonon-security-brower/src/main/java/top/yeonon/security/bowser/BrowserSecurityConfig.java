@@ -9,7 +9,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
+import top.yeonon.security.bowser.session.YeononSessionExpireStrategy;
 import top.yeonon.security.core.authentication.AbstractChannelSecurityConfig;
 import top.yeonon.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import top.yeonon.security.core.properties.SecurityConstants;
@@ -39,6 +42,12 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SpringSocialConfigurer yeononSocialSecurityConfig;
+
+    @Autowired
+    private InvalidSessionStrategy yeononInvalidSessionStrategy;
+
+    @Autowired
+    private SessionInformationExpiredStrategy yeononSessionExpireStrategy;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -70,6 +79,14 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                 .userDetailsService(userDetailsService)
                 .and()
+                .sessionManagement()
+                .invalidSessionStrategy(yeononInvalidSessionStrategy)
+                .invalidSessionUrl(SecurityConstants.DEFAULT_SESSION_INVALID_URL)
+                .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
+                .expiredSessionStrategy(yeononSessionExpireStrategy)
+                .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
+                .and()
+                .and()
                 .authorizeRequests()
                 .antMatchers(
                         SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
@@ -77,6 +94,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                         securityProperties.getBrowser().getLoginPage(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
                         securityProperties.getBrowser().getSignUpUrl(),
+                        SecurityConstants.DEFAULT_SESSION_INVALID_URL,
                         "/users/regist")
                 .permitAll()
                 .anyRequest()

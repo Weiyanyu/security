@@ -46,4 +46,6 @@ public interface SecurityConstants {
      */
     String DEFAULT_PARAMETER_NAME_MOBILE = "mobile";
 
+    String DEFAULT_SESSION_INVALID_URL = "/session-invalid.html";
+
 }

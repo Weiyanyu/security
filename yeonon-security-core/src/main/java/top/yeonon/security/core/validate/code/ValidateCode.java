@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
  **/
 @Setter
 @Getter
-public class ValidateCode {
+public class ValidateCode implements Serializable {
     private String code;
 
     private LocalDateTime expireTime;

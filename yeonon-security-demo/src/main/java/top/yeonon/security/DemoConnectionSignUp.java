@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @Author yeonon
  * @date 2018/2/26 0026 19:02
  **/
-@Component
+//@Component
 public class DemoConnectionSignUp implements ConnectionSignUp {
 
 
