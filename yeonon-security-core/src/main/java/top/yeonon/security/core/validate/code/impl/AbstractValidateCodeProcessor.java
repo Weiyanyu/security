@@ -18,7 +18,8 @@ import java.util.Map;
  **/
 public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> implements ValidateCodeProcessor {
 
-    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+    @Autowired
+    private ValidateCodeRepository validateCodeRepository;
 
     @Autowired
     private Map<String, ValidateCodeGenerator> validateCodeGenerators;
@@ -32,10 +33,9 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 
     @Override
     public void validate(ServletWebRequest request) {
-        ValidateCodeType type = getValidateCodeType(request);
-        String sessionKey = getSessionKey(request);
+        ValidateCodeType type = getValidateCodeType();
 
-        C codeInSession = (C) sessionStrategy.getAttribute(request, sessionKey);
+        C codeInSession = (C) validateCodeRepository.get(request, type);
 
         String codeInRequest;
         try {
@@ -54,7 +54,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
         }
 
         if (codeInSession.isExpire()) {
-            sessionStrategy.removeAttribute(request, sessionKey);
+            validateCodeRepository.remove(request, type);
             throw new ValidateCodeException(type + "验证码已过期");
         }
 
@@ -62,16 +62,12 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
             throw new ValidateCodeException(type + "验证码不匹配");
         }
 
-        sessionStrategy.removeAttribute(request, sessionKey);
+        validateCodeRepository.remove(request, type);
 
 
     }
 
-    private String getSessionKey(ServletWebRequest request) {
-        return SESSION_KEY_PREFIX + getValidateCodeType(request).toString().toUpperCase();
-    }
-
-    private ValidateCodeType getValidateCodeType(ServletWebRequest request) {
+    private ValidateCodeType getValidateCodeType() {
         String type = StringUtils.substringBefore(getClass().getSimpleName(), "ValidateCodeProcessor");
         return ValidateCodeType.valueOf(type.toUpperCase());
     }
@@ -85,7 +81,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 
     private void save(ServletWebRequest request, C validateCode) {
         ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
-        sessionStrategy.setAttribute(request, SESSION_KEY_PREFIX + getProcessorType(request).toUpperCase(), code);
+        validateCodeRepository.save(request, code, getValidateCodeType());
     }
 
     protected abstract void send(ServletWebRequest request, C validateCode) throws ServletRequestBindingException, IOException;

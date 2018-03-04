@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
-import top.yeonon.security.bowser.authentication.YeononLogoutSuccessHandler;
+import top.yeonon.security.bowser.logout.YeononLogoutSuccessHandler;
 import top.yeonon.security.bowser.session.YeononInvalidSessionStrategy;
 import top.yeonon.security.bowser.session.YeononSessionExpireStrategy;
 import top.yeonon.security.core.properties.SecurityProperties;

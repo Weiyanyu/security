@@ -1,20 +1,23 @@
 package top.yeonon.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import org.junit.Test;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.social.connect.web.ProviderSignInUtils;
+import org.springframework.security.core.Authentication;
+
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
 import top.yeonon.dto.User;
 import top.yeonon.dto.UserCondition;
-import top.yeonon.exception.UserServiceException;
+
+import top.yeonon.security.app.socail.AppSignUpUtils;
+import top.yeonon.security.core.properties.SecurityProperties;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,20 +29,30 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    @Autowired
+    private AppSignUpUtils appSignUpUtils;
 
     @Autowired
-    private ProviderSignInUtils providerSignInUtils;
+    private SecurityProperties securityProperties;
 
     @PostMapping("/regist")
     public void register(User user, HttpServletRequest request) {
         //注册用户
         String userId = user.getUsername();
-        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+        appSignUpUtils.doPostSignUp(userId, new ServletWebRequest(request));
     }
 
 
     @GetMapping("/me")
-    public UserDetails getMe(@AuthenticationPrincipal UserDetails userDetails) {
+    public Authentication getMe(Authentication userDetails, HttpServletRequest request) throws Exception {
+
+        String token = StringUtils.substringAfter(request.getHeader("Authorization"), "bearer ");
+
+        Claims claims = Jwts.parser().setSigningKey(securityProperties.getOAuth2().getJwtSigningKey().getBytes("UTF-8"))
+                .parseClaimsJws(token).getBody();
+
+        String school = (String) claims.get("school");
+        System.out.println(school);
         return userDetails;
     }
 

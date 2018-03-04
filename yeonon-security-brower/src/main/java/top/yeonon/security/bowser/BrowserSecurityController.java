@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 import top.yeonon.security.core.support.SampleResponse;
-import top.yeonon.security.bowser.support.SocialUserInfo;
+import top.yeonon.security.core.support.SocialUserInfo;
 import top.yeonon.security.core.properties.SecurityConstants;
 import top.yeonon.security.core.properties.SecurityProperties;
 

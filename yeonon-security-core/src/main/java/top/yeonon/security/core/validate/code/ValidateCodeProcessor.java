@@ -10,8 +10,6 @@ import java.io.IOException;
  * @date 2018/2/23 0023 16:10
  **/
 public interface ValidateCodeProcessor {
-    String SESSION_KEY_PREFIX = "SESSION_KEY_FOR_CODE_";
-
     void create(ServletWebRequest request) throws IOException, ServletRequestBindingException;
 
     void validate(ServletWebRequest request);

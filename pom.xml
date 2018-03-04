@@ -66,6 +66,7 @@
         <module>yeonon-security-brower</module>
         <module>yeonon-security-demo</module>
         <module>yeonon-security-core</module>
+        <module>sso-demo</module>
     </modules>
 
 
